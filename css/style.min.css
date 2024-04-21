@@ -613,3 +613,55 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+
+
+
+/* Styles for the Tips on Fasting section */
+/* Styles for the Tips on Fasting section */
+
+
+.tip {
+  margin-bottom: 40px;
+  text-align: justify;
+}
+
+.tip h5 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #2c3e50; /* Dark blue */
+}
+
+.tip ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+.tip ul li {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  color: #555; /* Dark gray */
+}
+
+.tip ul li strong {
+  font-weight: bold;
+}
+
+.tip p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #555; /* Dark gray */
+}
+
+.focus {
+  text-align: center;
+  font-size: 36px;
+  color: #e74c3c; /* Red */
+  margin-bottom: 40px;
+}
+
+
+
