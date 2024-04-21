@@ -573,3 +573,31 @@ textarea {
     width: 90%;
   }
 }
+
+Custom styles for the tips section
+#gtco-single-content {
+    padding: 50px 0;
+}
+
+#gtco-single-content h5 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#gtco-single-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+#gtco-single-content ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+#gtco-single-content ul li {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
