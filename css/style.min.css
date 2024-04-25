@@ -621,6 +621,7 @@ a:hover {
 /* Styles for the Tips on Fasting section */
 
 
+
 .tip {
   margin-bottom: 40px;
   text-align: justify;
@@ -661,6 +662,47 @@ a:hover {
   font-size: 36px;
   color: #e74c3c; /* Red */
   margin-bottom: 40px;
+}
+
+.chart {
+  width: 80%;
+  height: 400px;
+  transition: opacity 0.5s;
+}
+
+.chart-links {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-links li {
+  margin-right: 20px;
+}
+
+.chart-links li:last-child {
+  margin-right: 0;
+}
+
+.link:hover + .chart,
+.chart:hover {
+  display: block;
+  opacity: 1;
+}
+
+.link:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#chart_div {
+  width: 100%;
+}
+
+#links-section {
+  margin-top: -50px;
 }
 
 
