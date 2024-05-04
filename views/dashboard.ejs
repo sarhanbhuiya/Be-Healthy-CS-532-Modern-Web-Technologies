@@ -1,0 +1,34 @@
+<!-- Contact Form Section -->
+<section id="gtco-single-content" class="bg-white">
+    <div class="container">
+        <div class="section-content blog-content">
+            <div class="row">
+                <!-- Single Content Holder -->
+                <div class="form1 col-md-8 offset-md-2 mt-4">
+                    <br>
+                    <h4 class="focus">Enter Your Fasting Time Here</h4>
+                    <br>
+                    <form action="/submit_fasting_data" method="post">
+                        <label for="start_fast">Start Fast:</label><br>
+                        <input type="time" id="start_fast" name="start_fast"><br><br>
+                    
+                        <label for="end_fast">End Fast:</label><br>
+                        <input type="time" id="end_fast" name="end_fast"><br><br>
+                    
+                        <label for="manual_input_dial">Manual Input (Using Dial):</label><br>
+                        <input type="number" id="manual_input_dial" name="manual_input_dial"><br><br>
+                    
+                        <label for="manual_input_calendar">Manual Input (Using Calendar):</label><br>
+                        <input type="date" id="manual_input_calendar" name="manual_input_calendar"><br><br>
+                    
+                        <label for="notes">Notes:</label><br>
+                        <textarea id="notes" placeholder="Optional!" name="notes" rows="4" cols="50"></textarea><br><br>
+                    
+                        <input type="submit" value="Submit">
+                    </form>
+                    </div>
+                <!-- End of Contact Form Holder -->
+            </div>
+        </div>
+    </div>
+</section>

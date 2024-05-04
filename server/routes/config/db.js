@@ -1,4 +1,4 @@
-/*
+
 const mongoose = require('mongoose');
 const connectDB = async () => {
   
@@ -14,4 +14,4 @@ const connectDB = async () => {
 }
 
 module.exports = connectDB;
-*/
+
