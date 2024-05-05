@@ -9,18 +9,50 @@
                 <div class="col-md-8 offset-md-2 mt-4">
                     <h1 class="focus">Sign Up</h1>
 
-                    <form action="register.php" method="post">
+                    <form action="/signup" method="post">
+                      <div>
+                        <label for="fname">First Name:</label><br>
+                        <input type="text" id="fname" name="fname" required><br>
+                        <label for="lname">Last Name:</label><br>
+                        <input type="text" id="lname" name="lname" required><br>
                         <label for="email">Enter Your Email:</label><br>
                         <input type="text" id="email" name="email" required><br>
                         <label for="password">Create Your Password:</label><br>
                         <input type="password" id="password" name="password" required><br>
-                        <button type="submit">Sign Up</button>
-                      </form>
-                      <p>Already have an account? <a href="signin.html">Sign in here</a>.</p>
+                        <button type="submit">Create New Account</button>
+                      </div>
+                    </form>
+                    <p>Already have an account? <a href="signin.html">Sign in here</a>.</p>
 
-                    </div>
+                    <!-- <form action="/weightdata">
+                      <div>
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" required><br>
+                        <label for="gender">Gender:</label>
+                        <input type="text" id="gender" name="gender"><br>
+                        <label for="health">Health (1-10):</label>
+                        <input type="number" id="health" name="health" min="1" max="10"><br>
+                        <label for="hours_sleep">Hours of Sleep:</label>
+                        <input type="number" id="hours_sleep" name="hours_sleep"><br>
+                        <label for="stress_level">Stress Level (1-10):</label>
+                        <input type="number" id="stress_level" name="stress_level" min="1" max="10"><br>
+                        <label for="weight">Weight (lbs):</label>
+                        <input type="number" id="weight" name="weight" required><br>
+                        <label for="target_weight">Target Weight (kg):</label>
+                        <input type="number" id="target_weight" name="target_weight"><br>
+                        <label for="height">Height (cm):</label>
+                        <input type="number" id="height" name="height" required><br>
+                        <label for="body_fat_percentage">Body Fat Percentage:</label>
+                        <input type="number" id="body_fat_percentage" name="body_fat_percentage" required><br>
+                        <button type="submit">Submit Information</button>
+                      </div>
+                    </form> -->
+
+
+
+                </div>
                 <!-- End of Contact Form Holder -->
-            </div>
+              </div>
         </div>
     </div>
 </section>
