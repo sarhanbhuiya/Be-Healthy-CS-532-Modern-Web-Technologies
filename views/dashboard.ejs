@@ -1,6 +1,6 @@
 <div class="boxed-page">
 
-    <!-- Contact Form Section -->
+    <!-- Enter Fasting Data Form Section -->
 <section id="gtco-single-content" class="bg-white">
     <div class="container">
         <div class="section-content blog-content">
@@ -22,7 +22,10 @@
                     
                         <label for="manual_input_calendar">Manual Input (Using Calendar):</label><br>
                         <input type="date" id="manual_input_calendar" name="manual_input_calendar"><br><br>
-                    
+
+                        <label for="weight">Weight (lbs):</label><br>
+                        <input type="number" id="weight" name="weight" placeholder="Enter weight in pounds"><br><br>
+
                         <label for="notes">Notes:</label><br>
                         <textarea id="notes" placeholder="Optional!" name="notes" rows="4" cols="50"></textarea><br><br>
                     
@@ -30,6 +33,52 @@
                     </form>
                     </div>
                 <!-- End of Contact Form Holder -->
+
+                    
+                    
+            
+            <div class="form1 col-md-8 offset-md-2 mt-4">
+                <br>
+                <div class="focus">
+                    <h2>Your Latest Profile Data</h2>
+                </div>
+
+
+                <!-- Second Form for Displaying Submitted Data -->
+                <form id="displayForm">
+                    <label for="display_present_weight">Present Weight:</label><br>
+                    <input type="text" id="display_present_weight" readonly><br><br>
+
+                    <label for="display_weight_goal">Weight Goal:</label><br>
+                    <input type="text" id="display_weight_goal" readonly><br><br>
+
+                    <label for="display_age">Age:</label><br>
+                    <input type="text" id="display_age" readonly><br><br>
+
+                    <label for="display_hours_of_sleep">Hours of Sleep:</label><br>
+                    <input type="text" id="display_hours_of_sleep" readonly><br><br>
+
+                    <label for="display_stress_level">Stress Level:</label><br>
+                    <input type="text" id="display_stress_level" readonly><br><br>
+
+                    <label for="display_height">Height:</label><br>
+                    <input type="text" id="display_height" readonly><br><br>
+
+                    <label for="display_body_fat_percentage">Body Fat Percentage:</label><br>
+                    <input type="text" id="display_body_fat_percentage" readonly><br><br>
+
+                    <label for="display_recommended_fasting_data">Recommended Fasting Data:</label><br>
+                    <input type="text" id="display_recommended_fasting_data" readonly><br><br>
+
+                    <label for="display_date_of_last_fasting">Date of Last Fasting:</label><br>
+                    <input type="text" id="display_date_of_last_fasting" readonly><br><br>
+
+                    <label for="display_total_hours_of_last_fasting">Total Hours of Last Fasting:</label><br>
+                    <input type="text" id="display_total_hours_of_last_fasting" readonly><br><br>
+
+                </form>
+            </div>
+                <!-- End of Second Form -->
             </div>
         </div>
     </div>
