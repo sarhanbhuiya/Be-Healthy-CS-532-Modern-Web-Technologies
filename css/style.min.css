@@ -589,7 +589,7 @@ form input[type="password"] {
 }
 
 form button {
-  background-color: #007bff;
+  background-color: #DD4735;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -598,7 +598,7 @@ form button {
 }
 
 form button:hover {
-  background-color: #0056b3;
+  background-color: #DD4735;
 }
 
 p {
@@ -619,7 +619,6 @@ a:hover {
 
 /* Styles for the Tips on Fasting section */
 /* Styles for the Tips on Fasting section */
-
 
 
 .tip {
