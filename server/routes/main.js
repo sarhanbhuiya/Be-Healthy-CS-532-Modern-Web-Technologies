@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
+
 const UserLogin = require('../models/UserLogin');
 const Data = require('../models/Data');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const jwtSecret = process.env.JWT_SECRET;
 
 const Post = require('../models/Post');
 const FastData = require('../models/FastData');
@@ -35,20 +40,45 @@ router.get('/groupchallenge',(req, res) =>{
     res.render('groupchallenge');
 });
 
+/**
+ * 
+ * Check Login
+*/
+const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
 
-// Handle form submission
+  if(!token) {
+    return res.status(401).json( { message: 'Unauthorized' } );
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    return res.status(401).json( { message: 'Unauthorized' } );
+  }
+
+}
+
+/**
+ * POST /
+ * Admin - Register
+*/
 router.post('/signup', async (req, res) => {
   try {
-    // Extract form data from request body
-    const { fname, lname, email, password, age, gender, health, hours_sleep, stress_level, weight, target_weight, body_fat_percentage} = req.body;
+    const { fname, lname, email, password, age, gender, health, hours_sleep, stress_level, weight, target_weight, height, body_fat_percentage } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new instance of the UserLogin model with the extracted data
-    const newUserLogin = new UserLogin({
-      fname,
-      lname,
-      email,
-      password
-    });
+    try {
+      const user = await UserLogin.create({ fname, lname, email, password: hashedPassword });
+      // res.status(201).json({ message: 'User Created', user });
+    } catch (error) {
+      if(error.code === 11000) {
+        res.status(409).json({ message: 'User already in use' });
+      }
+      res.status(500).json({ message: 'Internal server error' })
+    }
 
     // Create a new instance of the Data model with the extracted data
     const newData = new Data({
@@ -60,21 +90,22 @@ router.post('/signup', async (req, res) => {
       stress_level,
       weight,
       target_weight,
+      height,
       body_fat_percentage
     });
 
     // Save the instance to the database
     const savedData = await newData.save();
-    const savedUserLogin = await newUserLogin.save();
 
     // Optionally, you can send a response indicating success
-    res.status(201).json({ user: savedUserLogin, data: savedData}); // Assuming you want to return the saved post data
+    res.status(201).json({ message: 'User and data created successfully', data: savedData}); //Send response here
 
   } catch (error) {
     // Handle any errors
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+
 });
 
 // Handle form submission
@@ -116,5 +147,46 @@ router.post('/dashboard', async (req, res) => {
     }
   });
   
+/**
+ * POST /
+ * Admin - Check Login
+ */
+router.post('/signin', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await UserLogin.findOne( { email } );
+
+    if(!user) {
+      return res.status(401).json( { message: 'Invalid credentials'} );
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if(!isPasswordValid) {
+      return res.status(401).json( { message: 'Invalid credentials'} );
+    }
+
+    const token = jwt.sign({ userId: user._id}, jwtSecret );
+    res.cookie('token', token, { httpOnly: true });
+
+    res.redirect('/dashboard');
+
+  } catch (error) {
+    
+  }
+
+});
+
+
+// /**
+//  * GET /
+//  * Admin Dashboard
+//  */
+// router.get('/dashboard', authMiddleware, async (req, res) => {
+//   res.render('dashboard');
+
+
+// });
 
 module.exports = router;
