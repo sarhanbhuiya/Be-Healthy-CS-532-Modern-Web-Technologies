@@ -181,6 +181,10 @@ router.post('/signin', async (req, res) => {
         // Store the email in a session
         req.session.email = email;
 
+        const token = jwt.sign({ userId: user._id}, jwtSecret );
+        res.cookie('token', token, { httpOnly: true });
+     
+
         res.redirect('/dashboard');
 
     } catch (error) {
@@ -189,5 +193,16 @@ router.post('/signin', async (req, res) => {
     }
   
   });
+
+  /**
+* POST /
+* Admin - Logout
+*/
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/signin')
+   });
+   
 
 module.exports = router;
