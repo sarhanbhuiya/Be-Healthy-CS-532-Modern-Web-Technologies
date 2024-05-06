@@ -10,22 +10,19 @@
                     <br>
                     <h4 class="focus">Enter Your Fasting Time Here</h4>
                     <br>
-                    <form action="/submit_fasting_data" method="post">
-                        <label for="start_fast">Start Fast:</label><br>
-                        <input type="time" id="start_fast" name="start_fast"><br><br>
+                    <form action="/dashboard" method="post">
+                        <label for="date">Date:</label><br>
+                        <input type="date" id="date" name="date"><br><br>
                     
-                        <label for="end_fast">End Fast:</label><br>
-                        <input type="time" id="end_fast" name="end_fast"><br><br>
+                        <label for="startFast">Start Fast:</label><br>
+                        <input type="time" id="startFast" name="startFast"><br><br>
                     
-                        <label for="manual_input_dial">Manual Input (Using Dial):</label><br>
-                        <input type="number" id="manual_input_dial" name="manual_input_dial"><br><br>
-                    
-                        <label for="manual_input_calendar">Manual Input (Using Calendar):</label><br>
-                        <input type="date" id="manual_input_calendar" name="manual_input_calendar"><br><br>
+                        <label for="endFast">End Fast:</label><br>
+                        <input type="time" id="endFast" name="endFast"><br><br>
 
-                        <label for="weight">Weight (lbs):</label><br>
-                        <input type="number" id="weight" name="weight" placeholder="Enter weight in pounds"><br><br>
-
+                        <label for="weight">Weight:</label><br>
+                        <input type="number" id="weight" name="weight"><br><br>
+                    
                         <label for="notes">Notes:</label><br>
                         <textarea id="notes" placeholder="Optional!" name="notes" rows="4" cols="50"></textarea><br><br>
                     
