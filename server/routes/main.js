@@ -29,8 +29,18 @@ router.get('/signup',(req, res) =>{
     res.render('signup');
 });
 
-router.get('/dashboard',(req, res) =>{
-    res.render('dashboard');
+router.get('/dashboard', async (req, res) => {
+    try {
+        const fastData = await FastData.find().select('date fastTime').exec();
+        const data = [['Date', 'Fast Time']];
+        fastData.forEach((item) => {
+            data.push([new Date(item.date), item.fastTime]);
+        });
+        res.render('dashboard', { fastData: JSON.stringify(data) });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 router.get('/tips',(req, res) =>{
@@ -68,86 +78,79 @@ const authMiddleware = (req, res, next) => {
   * POST /
   * Admin - Register
  */
- router.post('/signup', async (req, res) => {
-   try {
-     const { fname, lname, email, password, age, gender, health, hours_sleep, stress_level, weight, target_weight, height, body_fat_percentage } = req.body;
-     const hashedPassword = await bcrypt.hash(password, 10);
+  router.post('/signup', async (req, res) => {
+    try {
+      const { fname, lname, email, password, age, gender, health, hours_sleep, stress_level, weight, target_weight, height, body_fat_percentage } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
  
-     try {
-       const user = await UserLogin.create({ fname, lname, email, password: hashedPassword });
-       // res.status(201).json({ message: 'User Created', user });
-     } catch (error) {
-       if(error.code === 11000) {
-         res.status(409).json({ message: 'User already in use' });
-       }
-       res.status(500).json({ message: 'Internal server error' })
-     }
+      // Create user
+      const user = await UserLogin.create({ fname, lname, email, password: hashedPassword });
  
-     // Create a new instance of the Data model with the extracted data
-     const newData = new Data({
-       email,
-       age,
-       gender,
-       health,
-       hours_sleep,
-       stress_level,
-       weight,
-       target_weight,
-       height,
-       body_fat_percentage
-     });
+      // Create data only if user creation was successful
+      const newData = new Data({
+        email,
+        age,
+        gender,
+        health,
+        hours_sleep,
+        stress_level,
+        weight,
+        target_weight,
+        height,
+        body_fat_percentage
+      });
  
-     // Save the instance to the database
-     const savedData = await newData.save();
+      const savedData = await newData.save();
+      res.redirect('/signin');
+      // Optionally, you can send a response indicating success
+      
+    } catch (error) {
+      if (error.code === 11000) {
+        res.status(409).json({ message: 'User already in use' });
+      } else {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    }
+  });
  
-     // Optionally, you can send a response indicating success
-     res.status(201).json({ message: 'User and data created successfully', data: savedData}); //Send response here
- 
-   } catch (error) {
-     // Handle any errors
-     console.log(error);
-     res.status(500).json({ error: 'Internal Server Error' });
-   }
- 
- });
 
 // Handle form submission
 router.post('/dashboard', async (req, res) => {
     try {
-        
-      // Extract form data from request body
-      const {date, startFast, endFast, notes} = req.body;
-      
-      // Parse time strings into date objects
-      const startTime = new Date(`${date}T${startFast}:00`);
-      startTime.setHours(startTime.getHours() + 6);
-      const endTime = new Date(`${date}T${endFast}:00`);
-      endTime.setHours(endTime.getHours() +6);
-      const fastTime = (endTime - startTime) / (1000 * 60 * 60);
-      const email = "zhumingfang3@gmail.com"
-  
-      // Create a new instance of the UserLogin model with the extracted data
-      const newFastData = new FastData({
-        email,
-        date, 
-        startFast: startTime, 
-        endFast: endTime, 
-        fastTime, 
-        notes
-      });
+        // Extract form data from request body
+        const { date, startFast, endFast, notes } = req.body;
 
-  
-      // Save the instance to the database
-      const savedFastData = await newFastData.save();
-  
-      // Optionally, you can send a response indicating success
-      res.status(201).json({savedFastData}); // Assuming you want to return the saved post data
-  
+        // Parse time strings into date objects
+        const startTime = new Date(`${date}T${startFast}:00`);
+        startTime.setHours(startTime.getHours() + 6);
+        const endTime = new Date(`${date}T${endFast}:00`);
+        endTime.setHours(endTime.getHours() + 6);
+        const fastTime = (endTime - startTime) / (1000 * 60 * 60);
+        const email = "zhumingfang3@gmail.com"
+
+        // Create a new instance of the UserLogin model with the extracted data
+        const newFastData = new FastData({
+            email,
+            date,
+            startFast: startTime,
+            endFast: endTime,
+            fastTime,
+            notes
+        });
+
+        // Save the instance to the database
+        await newFastData.save();
+
+        // Redirect to the dashboard page
+        res.redirect('/dashboard');
+
     } catch (error) {
-      // Handle any errors
-      console.log(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+        // Handle any errors
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
+
   });
   
 /**
