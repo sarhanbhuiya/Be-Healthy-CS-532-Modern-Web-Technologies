@@ -115,21 +115,27 @@ const authMiddleware = (req, res, next) => {
   });
  
 
-// Handle form submission
-router.post('/dashboard', async (req, res) => {
+// Handle form submission for fasting data
+router.post('/dashboard', authMiddleware, async (req, res) => {
     try {
         // Extract form data from request body
         const { date, startFast, endFast, notes } = req.body;
 
         // Parse time strings into date objects
         const startTime = new Date(`${date}T${startFast}:00`);
-        startTime.setHours(startTime.getHours() + 6);
+        startTime.setHours(startTime.getHours() -6);
         const endTime = new Date(`${date}T${endFast}:00`);
-        endTime.setHours(endTime.getHours() + 6);
+        endTime.setHours(endTime.getHours() -6);
         const fastTime = (endTime - startTime) / (1000 * 60 * 60);
-        const email = "zhumingfang3@gmail.com"
 
-        // Create a new instance of the UserLogin model with the extracted data
+        // Get the user's email from the session
+        const email = req.session.email;
+
+        if (!email) {
+            return res.status(401).json({ error: 'User not authenticated' });
+        }
+
+        // Create a new instance of the FastData model with the extracted data
         const newFastData = new FastData({
             email,
             date,
@@ -150,8 +156,7 @@ router.post('/dashboard', async (req, res) => {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-
-  });
+});
   
 /**
  * POST /
@@ -159,27 +164,28 @@ router.post('/dashboard', async (req, res) => {
  */
 router.post('/signin', async (req, res) => {
     try {
-      const { email, password } = req.body;
-  
-      const user = await UserLogin.findOne( { email } );
-  
-      if(!user) {
-        return res.status(401).json( { message: 'Invalid credentials'} );
-      }
-  
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if(!isPasswordValid) {
-        return res.status(401).json( { message: 'Invalid credentials'} );
-      }
-  
-      const token = jwt.sign({ userId: user._id}, jwtSecret );
-      res.cookie('token', token, { httpOnly: true });
-  
-      res.redirect('/dashboard');
-  
+        const { email, password } = req.body;
+
+        const user = await UserLogin.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Store the email in a session
+        req.session.email = email;
+
+        res.redirect('/dashboard');
+
     } catch (error) {
-      
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
   
   });
