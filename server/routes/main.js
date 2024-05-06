@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const UserLogin = require('../models/UserLogin')
-const WeightData = require('../models/WeightData')
+const Data = require('../models/Data')
 
 
 // Add body-parser middleware
@@ -38,9 +38,9 @@ router.get('/groupchallenge',(req, res) =>{
 router.post('/signup', async (req, res) => {
   try {
     // Extract form data from request body
-    const { fname, lname, email, password } = req.body;
+    const { fname, lname, email, password, age, gender, health, hours_sleep, stress_level, weight, target_weight, body_fat_percentage} = req.body;
 
-    // Create a new instance of the Post model with the extracted data
+    // Create a new instance of the UserLogin model with the extracted data
     const newUserLogin = new UserLogin({
       fname,
       lname,
@@ -48,42 +48,31 @@ router.post('/signup', async (req, res) => {
       password
     });
 
+    // Create a new instance of the Data model with the extracted data
+    const newData = new Data({
+      email,
+      age,
+      gender,
+      health,
+      hours_sleep,
+      stress_level,
+      weight,
+      target_weight,
+      body_fat_percentage
+    });
+
     // Save the instance to the database
+    const savedData = await newData.save();
     const savedUserLogin = await newUserLogin.save();
 
     // Optionally, you can send a response indicating success
-    res.status(201).json(savedUserLogin); // Assuming you want to return the saved post data
+    res.status(201).json({ user: savedUserLogin, data: savedData}); // Assuming you want to return the saved post data
+
   } catch (error) {
     // Handle any errors
     console.log(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-// router.post('/signup', async (req, res) => {
-//   try {
-//     // Extract form data from request body
-//     const { email, weight, target_weight, body_fat_percentage } = req.body;
-
-//     // Create a new instance of the Post model with the extracted data
-//     const newWeightData = new WeightData({
-//       email,
-//       weight,
-//       target_weight,
-//       body_fat_percentage
-//     });
-
-//     // Save the instance to the database
-//     const savedWeightData = await newWeightData.save();
-
-//     // Optionally, you can send a response indicating success
-//     res.status(201).json(savedWeightData); // Assuming you want to return the saved post data
-//   } catch (error) {
-//     // Handle any errors
-//     console.log(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
 
 module.exports = router;
